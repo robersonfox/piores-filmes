@@ -4,6 +4,7 @@ spring:
         password: ''
         platform: h2
         # url: jdbc:h2:file:./data/demo
+        url: jdbc:h2:mem:demo
         username: sa
     h2:
         console:
@@ -14,3 +15,6 @@ spring:
                 web-allow-others: true
     jpa:
         database-platform: org.hibernate.dialect.H2Dialect
+
+app:
+    CVS_FILE: src/main/resources/data.csv
