@@ -2,7 +2,7 @@ package br.com.piorfilme.usecases.producers;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,7 +32,13 @@ public class ProducerImp implements IProducer<ProducerImp.Res> {
 
     private Set<ProducerResponse> getProducers() {
         if (producers == null) {
-            producers = port.getWinners().stream().collect(Collectors.toSet());
+            List<ProducerResponse> p = port.getWinners();
+
+            if (p == null || p.isEmpty()) {
+                producers = new HashSet<>();
+            } else {
+                producers = port.getWinners().stream().collect(Collectors.toSet());
+            }
         }
 
         return producers;

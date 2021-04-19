@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.piorfilme.adapters.databases.models.Producer;
 import br.com.piorfilme.adapters.databases.repositorys.IProducerRepository;
 import br.com.piorfilme.usecases.producers.ProducerResponse;
 import br.com.piorfilme.usecases.producers.port.IProducerPort;
