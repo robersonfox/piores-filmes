@@ -47,7 +47,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Farm Farm")
+                .title("Pior Filme")
                 .description("Uma API RESTful para possibilitar a leitura da lista de indicados e vencedores da categoria Pior Filme do Golden Raspberry Awards.")
                 .version("1.0.0")
                 .license("Apache License Version 2.0")
