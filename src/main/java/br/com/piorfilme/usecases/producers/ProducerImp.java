@@ -1,7 +1,8 @@
 package br.com.piorfilme.usecases.producers;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,37 +46,32 @@ public class ProducerImp implements IProducer<ProducerImp.Res> {
     }
 
     private List<ProducerResponse> getProducerResponseMax() {
+        ProducerResponse response = new ProducerResponse();
+
         List<ProducerResponse> max = new ArrayList<>();
+        handleProducer(max);
 
-        for (ProducerResponse producerResponse : getProducers()) {
-            Long previousWin = producerResponse.getYear();
-            String strProducer = producerResponse.getProducer();
-
-            for (ProducerResponse producerResponse2 : getProducers()) {
-                String strProducer2 = producerResponse2.getProducer();
-                Long followingWin = producerResponse2.getYear();
-
-                if ((strProducer.equalsIgnoreCase(strProducer2)) && (!producerResponse.equals(producerResponse2))) {
-
-                    Long diff = (followingWin - previousWin);
-
-                    if (diff <= 1)
-                        continue;
-
-                    max.add(ProducerResponse.builder().followingWin(followingWin).previousWin(previousWin)
-                            .producer(strProducer).interval(diff).build());
-                }
-            }
+        if (!max.isEmpty()) {
+            response = max.stream().max(Comparator.comparing(ProducerResponse::getInterval)).get();
         }
 
-        Collections.sort(max);
-
-        return max.stream().distinct().collect(Collectors.toList());
+        return Arrays.asList(response);
     }
 
     private List<ProducerResponse> getProducerResponseMin() {
-        List<ProducerResponse> min = new ArrayList<>();
+        ProducerResponse response = new ProducerResponse();
 
+        List<ProducerResponse> min = new ArrayList<>();
+        handleProducer(min);
+
+        if (!min.isEmpty()) {
+            response = min.stream().min(Comparator.comparing(ProducerResponse::getInterval)).get();
+        }
+
+        return Arrays.asList(response);
+    }
+
+    private void handleProducer(List<ProducerResponse> m) {
         for (ProducerResponse producerResponse : getProducers()) {
             Long previousWin = producerResponse.getYear();
             String strProducer = producerResponse.getProducer();
@@ -88,18 +84,14 @@ public class ProducerImp implements IProducer<ProducerImp.Res> {
 
                     Long diff = (followingWin - previousWin);
 
-                    if (diff <= -1 || diff > 1)
+                    if (diff <= -1)
                         continue;
 
-                    min.add(ProducerResponse.builder().followingWin(followingWin).previousWin(previousWin)
+                    m.add(ProducerResponse.builder().followingWin(followingWin).previousWin(previousWin)
                             .producer(strProducer).interval(diff).build());
                 }
             }
         }
-
-        Collections.sort(min);
-
-        return min.stream().distinct().collect(Collectors.toList());
     }
 
     @Data
